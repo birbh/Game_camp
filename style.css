@@ -39,7 +39,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .card {
@@ -47,4 +47,46 @@ body {
   color: white;
   padding: 24px 32px;
   border-radius: 12px;
+}
+
+.game-screen{
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
+
+canvas {
+  background: linear-gradient(135deg, #1e293b, #0b1020);
+  border: 2px solid var(--accent);
+  border-radius: 11px;
+  display: block;
+  margin: 0 auto;
+}
+
+.game-over{
+  position:absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(10, 15, 30, 0.9);
+
+}
+
+.game-over .card{
+  text-align: center;
+}
+
+.game-over button{
+  background: var(--accent);
+  color: #2e0000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.game-over button:hover{
+  filter: brightness(1.2);
 }

@@ -16,11 +16,20 @@
         </nav>
 
         <div class="start-screen show" id="startScreen">
-            <h1>Welcome to the game!!!!</h1>
-            <button id="start-button">Start Game</button>
+            <div class="card">    
+                <h1>Welcome to the game!!!!</h1>
+                <button id="start-button">Start Game</button>
+            </div>
         </div>
 
         <div class="game-screen hidden" id="gameScreen">
+            <div id="gameOver" class="game-over hidden">
+                <div class="card">
+                    <h1>Game Over Bro!!!</h1>
+                    <p>Your score is :<span id="finalScore">0</span></p>
+                    <button id="restart-button">Restart Game♻️</button>
+                </div>
+            </div>
             <canvas id="game-canvas" width="700" height="600"></canvas>
             <p>Game is now running...</p>
         </div>
