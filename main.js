@@ -30,6 +30,7 @@ const player = {
 const obstacle= [];
 
 let score = 0;
+let bestsc=0;
 let gameOver = false;
 let speed = 2;
 let spawn=0.02;
@@ -65,7 +66,18 @@ function Player() {
     context.fillRect(player.x, player.y, player.width, player.height);
 }
 function loop() {
+    document.getElementById("score").textContent = score;
     context.clearRect(0, 0, canvas.width, canvas.height);
+    if(gameOver) {
+        for(let i=0; i<obstacle.length; i++) {
+            const obs=obstacle[i];
+            context.fillStyle = "#f97316";
+            context.fillRect(obs.x, obs.y, obs.size, obs.size);
+        }
+            Player();
+            animationId = requestAnimationFrame(loop);
+            return;
+    }
     if (Math.random() < spawn) {
         spawnObstacle();
     }
@@ -91,6 +103,8 @@ function loop() {
             
             if(!gameOver && collision(player, obs)) {
                 gameOver = true;    
+                bestsc = Math.max(bestsc, score);
+                document.getElementById("bestsc").textContent = bestsc;
                 finalScore.textContent = score;
                 gameOverScreen.classList.remove("hidden");
                 console.log("Game Over Bro!!! Your score is : " + score);
@@ -98,14 +112,11 @@ function loop() {
         }
     }
 
-    context.fillStyle = "#e2e8f0";
-    context.font = "20px Arial";
-    context.fillText("Score: " + score, 10, 30);
 
     Player();
     
-    speed = Math.min(5, 2 + score * 0.02);
-    spawn = Math.min(0.035, 0.02 + score * 0.002);
+    speed = Math.min(5, 2 + score * 0.1);
+    spawn = Math.min(0.035, 0.02 + score * 0.02);
     
     animationId = requestAnimationFrame(loop);
 
