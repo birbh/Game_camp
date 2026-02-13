@@ -45,7 +45,8 @@ https://github.com/user-attachments/assets/4e1a6c80-3104-439c-9600-300cd529db97
 
 ## For playing ::
 
-1. 
+1. Go on this link:: [Github Pages](https://birbh.github.io/Game_camp/index.html)
+2. See the game in itch.io : [Itch io](https://birbh.itch.io/dodge-the-cubes)
 
 ## Game Workflow
 
@@ -62,7 +63,7 @@ The game uses circular collision detection based on the rocket's radius and obst
 
 ## Browser Compatibility
 
-Works on all modern browsers (Chrome, Firefox, Safari, Edge)
+Works on all modern browsers
 
 
 
@@ -71,4 +72,4 @@ The code is simple and easy to modify. Feel free to tweak colors, speeds, and di
 
 
 
-**Built with 💙 and JavaScript**
+**Built with JavaScript,HTML & CSS**
