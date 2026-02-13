@@ -5,6 +5,10 @@ const gameScreen = document.getElementById("gameScreen");
 const gameOverScreen = document.getElementById("gameOver");
 const finalScore = document.getElementById("finalScore");
 const restartBtn = document.getElementById("restart-button");
+const playericon = new Image();
+playericon.src = "rocket_icon.svg";
+let isPaused = false;
+
 
 
 startBtn.addEventListener("click", () => {
@@ -22,10 +26,11 @@ const context= canvas.getContext("2d");
 
 
 const player = {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     x: canvas.width / 2 - 20,
-    y: canvas.height - 60,
+    y: canvas.height - 70,
+    radius: 19
 };
 
 const obstacle= [];
@@ -37,12 +42,12 @@ let gameOver = false;
 let speed = 2;
 let spawn=0.02;
 function collision(a, b) {
-    return (
-        a.x < b.x + b.size &&
-        a.x + a.width > b.x &&
-        a.y < b.y + b.size &&
-        a.y + a.height > b.y
-    );
+    const aCenterX = a.x + a.width / 2;
+    const aCenterY = a.y + a.height / 2;
+    const bCenterX = b.x + b.size / 2;
+    const bCenterY = b.y + b.size / 2;
+    const dist = Math.sqrt((aCenterX - bCenterX) ** 2 + (aCenterY - bCenterY) ** 2);
+    return dist < (a.radius + b.size / 2);
 }
 
 function spawnObstacle() {
@@ -70,8 +75,7 @@ const star=Array.from({length:100}, () => ({
 let animationId;
 
 function Player() {
-    context.fillStyle = "#ff000dd3";
-    context.fillRect(player.x, player.y, player.width, player.height);
+    context.drawImage(playericon, player.x, player.y, player.width, player.height);
 }
 function loop() {
     document.getElementById("score").textContent = score;
@@ -118,10 +122,16 @@ function loop() {
             context.fillRect(obs.x, obs.y, obs.size, obs.size);
             
             if(!gameOver && collision(player, obs)) {
-                gameOver = true;    
+                gameOver = true;  
+                let tmp = bestsc;  
                 bestsc = Math.max(bestsc, score);
                 document.getElementById("bestsc").textContent = bestsc;
-                finalScore.textContent = score;
+                if(score > tmp){
+                    finalScore.innerHTML = score + "<br>🎉 New High Score!";
+                }
+                else{
+                    finalScore.textContent = score;
+                }
                 gameOverScreen.classList.remove("hidden");
                 console.log("Game Over Bro!!! Your score is : " + score);
             }

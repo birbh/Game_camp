@@ -159,7 +159,7 @@ canvas {
 }
 
 body {
-  padding-top: 56px;
+  padding-top: 60px;
 }
 
 .about-page {
@@ -177,6 +177,7 @@ body {
   margin-top: 0;
   color: var(--accent);
   text-align: center;
+  padding: 20px 0;
 }
 
 .about-page h2 {
@@ -215,7 +216,7 @@ body {
   display: none;
 }
 .play-btn::after {
-  content: 'Dang it!! 🎮';
+  content: 'Dang it!! 🎮👾';
   opacity: 0;
   margin-left: -200px; 
   transition: all 0.25s ease;

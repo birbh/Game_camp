@@ -8,20 +8,18 @@
         <script src="main.js" defer></script>
     </head>
     <body>
-        
-        
         <div class="start-screen show" id="startScreen">
             <div class="home">    
                 <div class="heading"><h1>Endless Dodger</h1></div>
                 <h1>Welcome to the game!!!!</h1>
-                <p class="tagline">How long can you survive?</p>
+                <p class="tagline">How long can you survive mate?</p>
                 <div class="stats">
                     <div>⚡⚡⚡⚡</div>
-                    <div> Fast-paced action</div>
+                    <div> Fast paced action</div>
                     <div> Progressive difficulty</div>
                     <div> Track your best score</div>
                 </div>
-                <button id="start-button" class="play-btn">Start Game</button>
+                <a id="start-button" class="play-btn"><span>Start Game</span></a>
             </div>
         </div>
 
@@ -29,7 +27,7 @@
             <div id="gameOver" class="game-over hidden">
                 <div class="card">
                     <h1>Game Over Bro!!!</h1>
-                    <p>Your score is :<span id="finalScore">0</span></p>
+                    <p>Your score is : <span id="finalScore">0</span></p>
                     <button id="restart-button">Restart Game♻️♺</button>
                 </div>
             </div>
@@ -44,7 +42,7 @@
                 <div>Best Score: <span id="bestsc">0</span></div>
             </div>
             <canvas id="game-canvas" width="700" height="600"></canvas>
-            <p>Game is now running...</p>
+            <p style="font-size: 30px; color: aquamarine;">Game is now running...</p>
         </div>
     </body>
 </html>
