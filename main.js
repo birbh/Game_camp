@@ -7,7 +7,7 @@ const finalScore = document.getElementById("finalScore");
 const restartBtn = document.getElementById("restart-button");
 const playericon = new Image();
 playericon.src = "rocket_icon.svg";
-let isPaused = false;
+// let isPaused = false;
 
 
 
