@@ -16,6 +16,7 @@ startBtn.addEventListener("click", () => {
     }, 400);
 });
 
+
 const canvas = document.getElementById("game-canvas");
 const context= canvas.getContext("2d");
 
@@ -28,6 +29,7 @@ const player = {
 };
 
 const obstacle= [];
+
 
 let score = 0;
 let bestsc=0;
@@ -58,6 +60,12 @@ window.addEventListener("keyup", (event) => {
     key.delete(event.key);
 });
 
+const star=Array.from({length:100}, () => ({
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    size: Math.random()*2+1,
+    speed: speed*Math.random()*0.5+0.5
+}));
 
 let animationId;
 
@@ -68,6 +76,13 @@ function Player() {
 function loop() {
     document.getElementById("score").textContent = score;
     context.clearRect(0, 0, canvas.width, canvas.height);
+    for(let i=0; i<star.length; i++) {
+        const s=star[i];
+        s.y+=s.speed;
+        if(s.y > canvas.height) s.y=0;
+        context.fillStyle= "white";
+        context.fillRect(s.x, s.y, s.size, s.size);
+    }
     if(gameOver) {
         for(let i=0; i<obstacle.length; i++) {
             const obs=obstacle[i];
@@ -78,6 +93,7 @@ function loop() {
             animationId = requestAnimationFrame(loop);
             return;
     }
+
     if (Math.random() < spawn) {
         spawnObstacle();
     }
@@ -141,3 +157,9 @@ restartBtn.addEventListener("click", () => {
     gameOverScreen.classList.add("hidden");
     start();
 });
+
+// Autostart from about page
+const params = new URLSearchParams(window.location.search);
+if (params.get('autostart') === 'true') {
+    setTimeout(() => startBtn.click(), 0);
+}

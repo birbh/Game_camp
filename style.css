@@ -22,15 +22,36 @@ body {
   align-items: center;
 }
 
+
+.nav-links{
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--accent);
+}
+
+ul.horizontal {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: red;
+
+}
+
 .start-screen {
   position: fixed;
   inset: 0;
   display: grid;
   place-items: center;
-  background: rgba(10, 15, 30, 0.9);
   transform: translateY(100%);
   opacity: 0;
   transition: transform 400ms ease, opacity 400ms ease;
+  background: radial-gradient(circle at 80% 50%, rgb(52, 118, 219), transparent);
 }
 
 .start-screen.show {
@@ -101,4 +122,139 @@ canvas {
   margin-bottom: 12px;
   font-weight: bolder;
   font-size: 20px;
+}
+
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 28px;
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom: 2px solid var(--accent);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.nav-links a {
+  color: black;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.nav-links a:hover {
+  background: var(--accent);
+  color: #c813f5;
+  text-transform: capitalize;
+}
+
+body {
+  padding-top: 56px;
+}
+
+.about-page {
+  max-width: 880px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.about-page .card {
+  text-align: left;
+  width: 100%;
+}
+
+.about-page h1 {
+  margin-top: 0;
+  color: var(--accent);
+  text-align: center;
+}
+
+.about-page h2 {
+  color: var(--text);
+  margin-top: 24px;
+}
+
+.about-page ul {
+  line-height: 1.8;
+}
+
+.about-page ul li {
+  margin: 8px 0;
+}
+
+.play-btn {
+  display: table;
+  margin: 24px auto 0 auto; 
+  padding: 12px 24px;
+  background: var(--accent);
+  color: #0b1120;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: bold;
+  transition: filter 0.2s;
+  min-width: 120px;
+  font-size: xx-large;
+}
+
+.play-btn:hover {
+  filter: brightness(1.8);
+  content: none;
+  
+}
+.play-btn:hover span {
+  display: none;
+}
+.play-btn::after {
+  content: 'Dang it!! 🎮';
+  opacity: 0;
+  margin-left: -200px; 
+  transition: all 0.25s ease;
+}
+
+.play-btn:hover::after {
+  opacity: 1;
+  margin-left: 10px; 
+}
+
+.tagline {
+  font-size: 22px;
+  color: var(--muted);
+  margin: 8px 0 20px;
+  font-style: italic;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 24px 0;
+  padding: 16px;
+  background: rgba(162, 56, 248, 0.1);
+  border: 3px solid var(--accent);
+  border-radius: 13px;
+  font-size: 16px;
+  align-items: center;
+}
+
+.stats div {
+  display: flex;
+  gap: 10px;
+}
+
+
+
+
+.heading{
+  font-size: xxx-large;
+  color: rgba(196, 171, 12, 0.774);
 }
