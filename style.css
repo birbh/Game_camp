@@ -32,6 +32,8 @@ body {
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--accent);
+  border-radius: 60px;
+
 }
 
 ul.horizontal {
@@ -85,12 +87,11 @@ canvas {
 }
 
 .game-over{
-  position:absolute;
+  position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
   background: rgba(10, 15, 30, 0.9);
-
 }
 
 .game-over .card{
@@ -259,3 +260,4 @@ body {
   font-size: xxx-large;
   color: rgba(196, 171, 12, 0.774);
 }
+

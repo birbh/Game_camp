@@ -17,7 +17,7 @@ Endless Dodger is a browser based game built with vanilla HTML5, CSS3, and JS. C
 ## How to Play
 
 1. Click "Start Game" on the home screen
-2. Use **Arrow Keys** or **A/D** to move your rocket left and right
+2. Use Arrow Keys::⬅️➡️  or  🅰/🅳 to move your rocket left and right
 3. Avoid the orange falling blocks
 4. Each block you dodge adds 1 to your score
 5. The game ends when you hit the block

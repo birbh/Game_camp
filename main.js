@@ -1,16 +1,18 @@
+// DOM elements
 const startBtn = document.getElementById("start-button");
 const startScreen = document.getElementById("startScreen");
 const gameScreen = document.getElementById("gameScreen");
 
+// game over elements
 const gameOverScreen = document.getElementById("gameOver");
 const finalScore = document.getElementById("finalScore");
 const restartBtn = document.getElementById("restart-button");
 const playericon = new Image();
 playericon.src = "rocket_icon.svg";
-// let isPaused = false;
+// let isPaused = false;   ignore ::::
 
 
-
+// start button event listener
 startBtn.addEventListener("click", () => {
     startScreen.classList.remove("show");
     setTimeout(() => {
@@ -24,7 +26,7 @@ startBtn.addEventListener("click", () => {
 const canvas = document.getElementById("game-canvas");
 const context= canvas.getContext("2d");
 
-
+// Player object
 const player = {
     width: 50,
     height: 50,
@@ -41,6 +43,7 @@ let bestsc=0;
 let gameOver = false;
 let speed = 2;
 let spawn=0.02;
+// Collision detection
 function collision(a, b) {
     const aCenterX = a.x + a.width / 2;
     const aCenterY = a.y + a.height / 2;
@@ -49,7 +52,7 @@ function collision(a, b) {
     const dist = Math.sqrt((aCenterX - bCenterX) ** 2 + (aCenterY - bCenterY) ** 2);
     return dist < (a.radius + b.size / 2);
 }
-
+// Spawn obstacles
 function spawnObstacle() {
     const size=20+Math.random()*20;
     const x=Math.random()*(canvas.width-size);
@@ -65,6 +68,7 @@ window.addEventListener("keyup", (event) => {
     key.delete(event.key);
 });
 
+// Star bg
 const star=Array.from({length:100}, () => ({
     x: Math.random()*canvas.width,
     y: Math.random()*canvas.height,
@@ -74,9 +78,12 @@ const star=Array.from({length:100}, () => ({
 
 let animationId;
 
+// Draw player
 function Player() {
     context.drawImage(playericon, player.x, player.y, player.width, player.height);
 }
+
+// Main game loop
 function loop() {
     document.getElementById("score").textContent = score;
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -127,7 +134,7 @@ function loop() {
                 bestsc = Math.max(bestsc, score);
                 document.getElementById("bestsc").textContent = bestsc;
                 if(score > tmp){
-                    finalScore.innerHTML = score + "<br>🎉 New High Score!";
+                    finalScore.innerHTML = score + "<br><br>🎉 New High Score!!!<br>";
                 }
                 else{
                     finalScore.textContent = score;
@@ -152,11 +159,13 @@ function loop() {
     
 }
 
+// Start the game loop
 function start() {
     cancelAnimationFrame(animationId);
     loop();
 }
 
+// restart button listener
 restartBtn.addEventListener("click", () => {
     gameOver = false;
     score = 0;
