@@ -59,6 +59,12 @@ function spawnObstacle() {
     obstacle.push({x, y:-size, size});
 }
 
+const savebest=localStorage.getItem("bestscore");
+if(savebest){
+    bestsc=Number(savebest);
+    document.getElementById("bestsc").textContent = bestsc;
+}
+
 const key=new Set();
 
 window.addEventListener("keydown", (event) => {
@@ -140,6 +146,7 @@ function loop() {
                     finalScore.textContent = score;
                 }
                 gameOverScreen.classList.remove("hidden");
+                localStorage.setItem("bestscore", bestsc);
                 console.log("Game Over Bro!!! Your score is : " + score);
             }
         }
