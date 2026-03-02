@@ -1,191 +1,169 @@
-// DOM elements
-const startBtn = document.getElementById("start-button");
-const startScreen = document.getElementById("startScreen");
-const gameScreen = document.getElementById("gameScreen");
+// DOM refs
+const go = document.getElementById("gobtn");
+const welcome = document.getElementById("welcome");
+const zone = document.getElementById("zone");
 
-// game over elements
-const gameOverScreen = document.getElementById("gameOver");
-const finalScore = document.getElementById("finalScore");
-const restartBtn = document.getElementById("restart-button");
-const playericon = new Image();
-playericon.src = "rocket_icon.svg";
-// let isPaused = false;   ignore ::::
+// post game stuff
+const deadscreen = document.getElementById("dead");
+const finaltxt = document.getElementById("final");
+const retry = document.getElementById("retry");
+const ship = new Image();
+ship.src = "rocket_icon.svg";
 
-
-// start button event listener
-startBtn.addEventListener("click", () => {
-    startScreen.classList.remove("show");
+// hook up the start btn
+go.addEventListener("click", () => {
+    welcome.classList.add("hide"); // custom hide class
     setTimeout(() => {
-        startScreen.style.display = "none";
-        gameScreen.classList.remove("hidden");
-        start();
-    }, 400);
+        welcome.style.display = "none";
+        zone.classList.remove("hidden");
+        ignite(); // start it up
+    }, 450); 
 });
 
+const view = document.getElementById("view");
+const eng = view.getContext("2d");
 
-const canvas = document.getElementById("game-canvas");
-const context= canvas.getContext("2d");
-
-// Player object
-const player = {
-    width: 50,
-    height: 50,
-    x: canvas.width / 2 - 20,
-    y: canvas.height - 70,
-    radius: 19
+// Player/Unit data
+const unit = {
+    w: 50,
+    h: 50,
+    x: view.width / 2 - 20,
+    y: view.height - 70,
+    hitbox: 19
 };
 
-const obstacle= [];
+const enemies = [];
+let points = 0;
+let toprecord = 0;
+let rip = false;
+let movev = 2;
+let rate = 0.02;
 
-
-let score = 0;
-let bestsc=0;
-let gameOver = false;
-let speed = 2;
-let spawn=0.02;
-// Collision detection
-function collision(a, b) {
-    const aCenterX = a.x + a.width / 2;
-    const aCenterY = a.y + a.height / 2;
-    const bCenterX = b.x + b.size / 2;
-    const bCenterY = b.y + b.size / 2;
-    const dist = Math.sqrt((aCenterX - bCenterX) ** 2 + (aCenterY - bCenterY) ** 2);
-    return dist < (a.radius + b.size / 2);
-}
-// Spawn obstacles
-function spawnObstacle() {
-    const size=20+Math.random()*20;
-    const x=Math.random()*(canvas.width-size);
-    obstacle.push({x, y:-size, size});
+// checking hits
+function checkhit(a, b) {
+    const ax = a.x + a.w / 2;
+    const ay = a.y + a.h / 2;
+    const bx = b.x + b.size / 2;
+    const by = b.y + b.size / 2;
+    return Math.sqrt((ax - bx)**2 + (ay - by)**2) < (a.hitbox + b.size / 2);
 }
 
-const savebest=localStorage.getItem("bestscore");
-if(savebest){
-    bestsc=Number(savebest);
-    document.getElementById("bestsc").textContent = bestsc;
+// spawn next block
+function getenemy() {
+    const s = 20 + Math.random()*20;
+    const x = Math.random()*(view.width-s);
+    enemies.push({x: x, y: -s, size: s});
 }
 
-const key=new Set();
+// load high score from disk
+const saved = localStorage.getItem("bestscore");
+if(saved) {
+    toprecord = Number(saved);
+    document.getElementById("best").textContent = toprecord;
+}
 
-window.addEventListener("keydown", (event) => {
-    key.add(event.key);
-});
-window.addEventListener("keyup", (event) => {
-    key.delete(event.key);
-});
+const input = new Set();
+window.onkeydown = e => input.add(e.key);
+window.onkeyup = e => input.delete(e.key);
 
-// Star bg
-const star=Array.from({length:100}, () => ({
-    x: Math.random()*canvas.width,
-    y: Math.random()*canvas.height,
-    size: Math.random()*2+1,
-    speed: speed*Math.random()*0.5+0.5
+// visual particles
+const stars = Array.from({length: 105}, () => ({
+    x: Math.random() * view.width,
+    y: Math.random() * view.height,
+    z: Math.random() * 2 + 1,
+    v: movev * Math.random() * 0.5 + 0.5
 }));
 
-let animationId;
+let ptr;
 
-// Draw player
-function Player() {
-    context.drawImage(playericon, player.x, player.y, player.width, player.height);
+function drawunit() {
+    eng.drawImage(ship, unit.x, unit.y, unit.w, unit.h);
 }
 
-// Main game loop
-function loop() {
-    document.getElementById("score").textContent = score;
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    for(let i=0; i<star.length; i++) {
-        const s=star[i];
-        s.y+=s.speed;
-        if(s.y > canvas.height) s.y=0;
-        context.fillStyle= "white";
-        context.fillRect(s.x, s.y, s.size, s.size);
+// main execution loop
+function step() {
+    document.getElementById("scoreshow").textContent = points;
+    eng.clearRect(0, 0, view.width, view.height);
+    
+    // stars moving
+    for(let i=0; i<stars.length; i++) {
+        const s = stars[i];
+        s.y += s.v;
+        if(s.y > view.height) s.y = 0;
+        eng.fillStyle = "rgba(255,255,255,0.7)";
+        eng.fillRect(s.x, s.y, s.z, s.z);
     }
-    if(gameOver) {
-        for(let i=0; i<obstacle.length; i++) {
-            const obs=obstacle[i];
-            context.fillStyle = "#f97316";
-            context.fillRect(obs.x, obs.y, obs.size, obs.size);
+
+    if(rip) {
+        for(let i=0; i<enemies.length; i++) {
+            const e = enemies[i];
+            eng.fillStyle = "#f97316";
+            eng.fillRect(e.x, e.y, e.size, e.size);
         }
-            Player();
-            animationId = requestAnimationFrame(loop);
-            return;
+        drawunit();
+        ptr = requestAnimationFrame(step);
+        return;
     }
 
-    if (Math.random() < spawn) {
-        spawnObstacle();
-    }
-    if (key.has("ArrowLeft") || key.has("a") || key.has("A")) {
-        player.x -= 5;
-    }
-    if (key.has("ArrowRight") || key.has("d") || key.has("D")) {
-        player.x += 5;
-    }
-    player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));
+    if (Math.random() < rate) getenemy();
+    
+    // key polling
+    if (input.has("ArrowLeft") || input.has("a")) unit.x -= 5.5;
+    if (input.has("ArrowRight") || input.has("d")) unit.x += 5.5;
+    
+    unit.x = Math.max(0, Math.min(view.width - unit.w, unit.x));
 
-    for(let i=obstacle.length-1; i>=0; i--) {
-        const obs=obstacle[i];
-        obs.y += speed;
+    for(let i=enemies.length-1; i>=0; i--) {
+        const e = enemies[i];
+        e.y += movev;
 
-        if (obs.y > canvas.height + obs.size) {
-            obstacle.splice(i, 1);
-            if(!gameOver) score++;
-        }
-        else{
-            context.fillStyle = "#f97316";
-            context.fillRect(obs.x, obs.y, obs.size, obs.size);
+        if (e.y > view.height + e.size) {
+            enemies.splice(i, 1);
+            if(!rip) points++;
+        } else {
+            eng.fillStyle = "#f97316";
+            eng.fillRect(e.x, e.y, e.size, e.size);
             
-            if(!gameOver && collision(player, obs)) {
-                gameOver = true;  
-                let tmp = bestsc;  
-                bestsc = Math.max(bestsc, score);
-                document.getElementById("bestsc").textContent = bestsc;
-                if(score > tmp){
-                    finalScore.innerHTML = score + "<br><br>🎉 New High Score!!!<br>";
+            if(!rip && checkhit(unit, e)) {
+                rip = true;
+                const old = toprecord;
+                toprecord = Math.max(toprecord, points);
+                document.getElementById("best").textContent = toprecord;
+                
+                if(points > old) {
+                    finaltxt.innerHTML = points + "<br><br><span>NEW TOP SCORE!</span>";
+                } else {
+                    finaltxt.textContent = points;
                 }
-                else{
-                    finalScore.textContent = score;
-                }
-                gameOverScreen.classList.remove("hidden");
-                localStorage.setItem("bestscore", bestsc);
-                console.log("Game Over Bro!!! Your score is : " + score);
+                deadscreen.classList.remove("hidden");
+                localStorage.setItem("bestscore", toprecord);
             }
         }
     }
 
-
-    Player();
-    
-    speed = Math.min(5, 2 + score * 0.1);
-    spawn = Math.min(0.035, 0.02 + score * 0.02);
-    
-    animationId = requestAnimationFrame(loop);
-
-
-    
-
-    
+    drawunit();
+    movev = Math.min(6, 2 + points * 0.1);
+    rate = Math.min(0.04, 0.02 + points * 0.015);
+    ptr = requestAnimationFrame(step);
 }
 
-// Start the game loop
-function start() {
-    cancelAnimationFrame(animationId);
-    loop();
+function ignite() {
+    cancelAnimationFrame(ptr);
+    step();
 }
 
-// restart button listener
-restartBtn.addEventListener("click", () => {
-    gameOver = false;
-    score = 0;
-    speed = 2;
-    spawn = 0.02;
-    obstacle.length = 0;
-    player.x = canvas.width / 2 - 20;
-    gameOverScreen.classList.add("hidden");
-    start();
-});
+retry.onclick = () => {
+    rip = false;
+    points = 0;
+    movev = 2;
+    rate = 0.02;
+    enemies.length = 0;
+    unit.x = view.width / 2 - 20;
+    deadscreen.classList.add("hidden");
+    ignite();
+};
 
-// Autostart from about page
-const params = new URLSearchParams(window.location.search);
-if (params.get('autostart') === 'true') {
-    setTimeout(() => startBtn.click(), 0);
+const q = new URLSearchParams(window.location.search);
+if (q.get('autostart') === 'true') {
+    window.onload = () => setTimeout(() => go.click(), 150);
 }

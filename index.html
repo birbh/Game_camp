@@ -8,45 +8,39 @@
         <script src="main.js" defer></script>
     </head>
     <body>
-        <!-- Start Screen  -->
-        <div class="start-screen show" id="startScreen">
+        <div class="intro show" id="welcome">
             <div class="home">    
-                <div class="heading"><h1>Endless Dodger</h1></div>
+                <div class="title"><h1>Endless Dodger</h1></div>
                 <h1>Welcome to the game!!!!</h1>
-                <p class="tagline">How long can you survive mate?</p>
-                <div class="stats">
+                <p class="tag">How long can you survive mate?</p>
+                <div class="points">
                     <div>⚡⚡⚡⚡</div>
                     <div> Fast paced action</div>
                     <div> Progressive difficulty</div>
                     <div> Track your best score</div>
                 </div>
-                <a id="start-button" class="play-btn"><span>Start Game</span></a>
+                <a id="gobtn" class="action"><span>Start Game</span></a>
             </div>
         </div>
-        <!-- hidden scrn -->
-        <div class="game-screen hidden" id="gameScreen">
-            <!-- Gave over scrn -->
-            <div id="gameOver" class="game-over hidden">
-                <div class="card">
+        <div class="gamearena hidden" id="zone">
+            <div id="dead" class="ded hidden">
+                <div class="box">
                     <h1>Game Over Bro!!!</h1>
-                    <p>Your score is : <span id="finalScore">0</span></p>
-                    <button id="restart-button">Restart Game♻️♺</button>
+                    <p>Your score is : <span id="final">0</span></p>
+                    <button id="retry">Restart Game♻️♺</button>
                 </div>
             </div>
-            <!-- nav bar -->
-            <nav class="navbar">
-                <div class="nav-links">
+            <nav class="top">
+                <div class="navlinks">
                     <a href="index.html">Home</a>
                     <a href="about.html">About</a>
                 </div>   
             </nav>
-            <!-- scoreboard -->
-            <div class="scoreboard">
-                <div>Score: <span id="score">0</span></div>
-                <div>Best Score: <span id="bestsc">0</span></div>
+            <div class="dash">
+                <div>Score: <span id="scoreshow">0</span></div>
+                <div>Best Score: <span id="best">0</span></div>
             </div>
-            <!-- game canvas -->
-            <canvas id="game-canvas" width="700" height="600"></canvas>
+            <canvas id="view" width="700" height="600"></canvas>
             <p style="font-size: 30px; color: aquamarine;">Game is now running...</p>
         </div>
     </body>
