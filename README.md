@@ -24,18 +24,6 @@ Endless Dodger is a browser based game built with vanilla HTML5, CSS3, and JS. C
 6. Click "Restart Game" to play again 
 
 
-## File Structure
-
-```
-Game_camp/
-├── index.html          
-├── about.html         
-├── style.css          
-├── main.js            
-├── rocket_icon.svg     
-└── README.md           
-```
-
 ## Demo video:
 
 
@@ -49,21 +37,17 @@ https://github.com/user-attachments/assets/4e1a6c80-3104-439c-9600-300cd529db97
 2. See the game in itch.io : [Itch io](https://birbh.itch.io/dodge-the-cubes)
 
 ## Game Workflow
-
 ### Collision Detection
 The game uses circular collision detection based on the rocket's radius and obstacle size. 
-
 ### Difficulty Scaling
 - **Obstacle Speed** and  **Spawn Rate**  increases gradually with your score
 - Game has a max speed limit so it doesn't become impossible
-
 ### Scoring
 - 1 Point for each obstacle that safely passes below your rocket
 - Best Score is tracked during play
 
-## Browser Compatibility
 
-Works on all modern browsers
+Works on all  browsers
 
 
 
